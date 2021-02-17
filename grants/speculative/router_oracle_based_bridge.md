@@ -1,4 +1,4 @@
-# Crosschain Order Routing
+# Oracle Based Bridge
 
 ## Project Description
 Router Protocol is building Cross-chain infrastructure that will seamlessly allow for liquidity to flow across chains, and also enable cross-chain price discovery. As the number of blockchains is increasing rapidly the liquidity across these chains is getting fragmented. Router aims to bridge this fragmented liquidity and enable cross-chain interaction between dapps and blockchains. Our first implementation is focused on smart order routing across various EVM supported chains. As more and more exchange venues develop across chains there are significant price differences due to constricted liquidity flows. Router infrastructure will enable natural arbitrage to play out and smooth out price imbalances across a vast pool of liquidity spanning multiple blockchains.
@@ -55,7 +55,7 @@ Shubham Singh, a senior full-stack engineer in the team, has in-depth experience
 * Chandan Choudhury: https://www.linkedin.com/in/chandan-choudhury-3b748a23/
 
 ## Intended Language of Development
-Solidity, Rust and Javascript
+Rust and Javascript
 
 ## Development Roadmap
 
@@ -67,52 +67,74 @@ Duration: 6 weeks
 Deliverables:
 * D1: Repository including a README that describes the project and explains how to run, test, and contribute
 * D2: Dockerization of the repository to run in CI pipeline and local development
-* D3: Basic structure of solidity contracts*
-* D4: Implementation of Root and Child chain contracts*
+* D3: Basic oracle adapter structure in `Rust`
+* D4: Implemetation of withdrawal and deposit notification backend*
 * D5: Unit test cases for core functionalities
  
 
 #### Milestone 2
 Duration: 6 weeks
 Deliverables: 
-* D6: Automation scripts for deployment and development on target chains
-* D7: Implementation of contracts for cross-chain price path discovery*
-* D8: Integration of chainlink to price discovery contracts
-* D9: Basic structure of the validator node to verify cross-chain transactions*
-* D10: Integration of contracts with validator nodes for event synchronization*
-* D11: Integration of D7 with Root and child chain contracts
-* D12: Manual Integration testing for cross-chain communication between contracts
+* D6: Implementation of bridge dashboard UI in ReactJS 
+* D7: Integration of bridge UI and notification backend
+* D8: Add `plug-and-play` API layer of bridge in NodeJS*
+* D9: Develop supporting contracts to allow asset transfer between **EVM** chains
+* D10: Deploy bridge between **Rococo Testnet** and **Ethereum Testnet**
+* D11: Integration testing for cross-chain communication using oracle based bridge
 
 #### Milestone 3
 Duration: 6 weeks
 Deliverables
-* D13: Automated integration test cases*
-* D14: Deployment on one of the parachains on **Rococo** testnet
-* D15: Contract mapping dashboard for testnet*
-* D16: Documentation and guidelines for integration: a) Submit Mapping, b) Integrate with Root and Child chain contracts, c) Local deployment
+* D13: Publish bridge as oracle adapter on Chainlink Network
+* D14: Integrate bridge UI with bridge oracle adapter
+* D15: Documentation and guidelines for integration: a) Use Bridge, b) Integrate with other Chains, c) Local deployment and development
+* D16: Deployment of bridge on Polkadot network
 
 ### Detailed Description
-#### D4: Implementation of Root and Child chain contracts
-Build the root chain and child chain contracts to store source and target contract maps for cross-chain interaction. This will allow users to map any contract on one chain to any contract on another chain. Build out a template to enable any contract to communicate across chains.
+#### D4: Implemetation of withdrawal and deposit notification backend
+Build Rust based event watcher backend that will listen to specific events from source chain and perform varoius actions on target chain.
+
+Source Chain Events
+- `Deposit`
+- `Withdraw`
+- `SyncState`
+
+Target Chain Triggers
+- `Mint`
+- `Burn`
+- `SyncState`
 
 
-#### D7: Implementation of contracts for cross-chain price path discovery.
-It is a mix of centralized and decentralized setup to find the optimal path for order execution. For identifying orders we will have a centralized setup for price discovery across various AMM's on different chains and for executing trades we trigger a contract call that will propagate from the bridge to the target chain and then target AMM. We are also exploring a potential integration with chainlink for the price discovery process.
+#### D7: Implementation of bridge dashboard UI in ReactJS
+Public facing user interface to perform various actions.
 
-#### D9: Basic structure of the validator node to verify cross-chain transactions.
-The bridging infra will rely on proof-of-stake validators and these validators will be analyzing the blocks for changes originated from the source chain. Once these events are identified the changes will be propagated across the target chains. Validators will also enable the propagation of data bytes to allow cross-chain contract data transfer.
+Allowed actions
+- `Cross-chain Transfer`
+- `Cross-chain Swap`
 
-#### D10: Integration of contracts with validator nodes for event synchronization.
-Prepare simulation of multiple validator nodes to validate transactions in a decentralized manner. A subset of active validators from the pool will be selected to act as block verifiers.
 
-#### D13: Automated integration test cases.
+#### D8: Add `plug-and-play` API layer of bridge in NodeJS
+Allow users to interact with bridge using API calls. This will also help developers to integrate their dapps with the Router bridge.
+
+Allowed Actions
+1. Authentication Endpoints
+    - `generateAPIKEY`
+    - `deleteAPIKEY`
+    - `getAPIKEY`
+2. Public Endpoints
+    - `transferStatus`
+    - `swapStatus`
+3. Private Endpoints
+    - `deposit`
+    - `withdraw`
+    - `swap`
+    - `transferData`
+
+#### D13: Integration testing for cross-chain communication using oracle based bridge
 Implement integration test cases on the `jest` framework and perform end-to-end testing for the overall infrastructure.
 
-#### D15: Contract mapping dashboard for testnet.
-Develop utilities to allow other developers to map their contracts to enable cross-chain data flow using router protocol.
-
 ## Funds Required Overall
-100,000 USD
+30,000 USD
 
 ## Additional Information
 * The team is currently implementing an EVM supported Substrate-based chain.
